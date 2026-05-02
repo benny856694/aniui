@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "motion/react";
 import { ThemePreview } from "@/components/theme-preview";
 import { ThemeSelect } from "@/components/theme-select";
 import { useTheme } from "@/components/theme-provider";
@@ -47,6 +47,38 @@ function StarIcon() {
   );
 }
 
+/* ── Motion variants ───────────────────────────────────────── */
+
+const heroContainer: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+
+const heroItem: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 140, damping: 20, mass: 0.6 } },
+};
+
+const pillItem: Variants = {
+  hidden: { opacity: 0, scale: 0.8, y: 6 },
+  show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 220, damping: 18 } },
+};
+
+const cardContainer: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+};
+
+const cardItem: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 130, damping: 22 } },
+};
+
+const sectionFade: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 110, damping: 22 } },
+};
+
 /* ── Main ──────────────────────────────────────────────────── */
 
 const jsonLd = {
@@ -76,6 +108,7 @@ const sitelinksJsonLd = {
 
 export default function HomePage() {
   const { theme } = useTheme();
+  const prefersReducedMotion = useReducedMotion();
   const [selectedPreset, setSelectedPreset] = useState("blue");
   const [customColor, setCustomColor] = useState<ColorDef | null>(null);
   const [selectedRadius, setSelectedRadius] = useState("0.75rem");
@@ -119,6 +152,8 @@ export default function HomePage() {
     setPreviewMode(result.mode);
   };
 
+  const previewKey = `${color.name}-${previewMode}-${selectedRadius}`;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -126,46 +161,96 @@ export default function HomePage() {
 
     {/* ── Hero with subtle dot pattern ─── */}
     <div className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 opacity-[0.03] dark:opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+      <motion.div
+        aria-hidden
+        className="absolute inset-0 -z-10 opacity-[0.03] dark:opacity-[0.06]"
+        style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "24px 24px" }}
+        animate={prefersReducedMotion ? undefined : { backgroundPosition: ["0px 0px", "24px 24px"] }}
+        transition={{ duration: 18, ease: "linear", repeat: Infinity }}
+      />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
 
+      {/* Soft animated radial glow */}
+      {!prefersReducedMotion && (
+        <motion.div
+          aria-hidden
+          className="absolute left-1/2 top-[-200px] -z-10 h-[520px] w-[820px] -translate-x-1/2 rounded-full blur-3xl"
+          style={{ background: "radial-gradient(closest-side, hsl(var(--primary) / 0.18), transparent)" }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: [0.6, 0.9, 0.6], scale: [0.95, 1.05, 0.95] }}
+          transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
+        />
+      )}
+
       <div className="mx-auto max-w-[1400px] px-6">
-        <div className="flex flex-col items-center text-center pt-24 sm:pt-32 pb-20">
+        <motion.div
+          className="flex flex-col items-center text-center pt-24 sm:pt-32 pb-20"
+          variants={heroContainer}
+          initial="hidden"
+          animate="show"
+        >
           {/* Component count badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 backdrop-blur-sm px-4 py-1.5">
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+          <motion.div variants={heroItem} className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 backdrop-blur-sm px-4 py-1.5">
+            <motion.span
+              className="h-2 w-2 rounded-full bg-green-500"
+              animate={prefersReducedMotion ? undefined : { scale: [1, 1.4, 1], opacity: [1, 0.7, 1] }}
+              transition={{ duration: 1.8, ease: "easeInOut", repeat: Infinity }}
+            />
             <span className="text-xs font-medium text-muted-foreground">89+ components and counting</span>
-          </div>
+          </motion.div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl leading-[1.05]">
+          <motion.h1
+            variants={heroItem}
+            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl leading-[1.05]"
+          >
             Build React Native apps{" "}
-            <span className="bg-gradient-to-r from-foreground via-foreground/60 to-foreground/30 bg-clip-text text-transparent">
+            <motion.span
+              className="bg-gradient-to-r from-foreground via-foreground/60 to-foreground/30 bg-clip-text text-transparent inline-block"
+              style={{ backgroundSize: "200% 100%" }}
+              animate={prefersReducedMotion ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+              transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+            >
               that ship.
-            </span>
-          </h1>
+            </motion.span>
+          </motion.h1>
 
-          <p className="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed">
+          <motion.p variants={heroItem} className="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed">
             Copy-paste production-ready components with silky-smooth animations.
             You own every line of code.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mt-5">
-            {["Expo", "Bare RN", "NativeWind", "Uniwind", "TypeScript", "New Architecture"].map((label) => (
-              <span key={label} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/40 px-3 py-1 text-xs font-medium text-muted-foreground">
+          <motion.div
+            variants={heroItem}
+            className="flex flex-wrap items-center justify-center gap-2.5 mt-5"
+          >
+            {["Expo", "Bare RN", "NativeWind", "Uniwind", "TypeScript", "New Architecture"].map((label, i) => (
+              <motion.span
+                key={label}
+                variants={pillItem}
+                custom={i}
+                whileHover={prefersReducedMotion ? undefined : { y: -2, scale: 1.04 }}
+                transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/40 px-3 py-1 text-xs font-medium text-muted-foreground"
+              >
                 <span className="text-green-500">✓</span> {label}
-              </span>
+              </motion.span>
             ))}
-          </div>
+          </motion.div>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 mt-8">
-            <Link
-              href="/docs"
-              className="h-12 px-8 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center hover:opacity-90 transition-opacity"
-            >
-              View Components &rarr;
-            </Link>
-            <a
+          <motion.div variants={heroItem} className="flex flex-col sm:flex-row items-center gap-3 mt-8">
+            <motion.div whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 320, damping: 20 }}>
+              <Link
+                href="/docs"
+                className="h-12 px-8 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center hover:opacity-90 transition-opacity"
+              >
+                View Components &rarr;
+              </Link>
+            </motion.div>
+            <motion.a
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 320, damping: 20 }}
               href="https://github.com/anishlp7/aniui"
               target="_blank"
               rel="noopener noreferrer"
@@ -173,47 +258,81 @@ export default function HomePage() {
             >
               <StarIcon />
               Star on GitHub
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
 
           {/* Install command */}
-          <button
+          <motion.button
+            variants={heroItem}
+            whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 18 }}
             onClick={handleCopyInstall}
             className="mt-8 inline-flex items-center gap-3 rounded-lg border border-border bg-secondary/30 backdrop-blur-sm px-5 py-2.5 font-mono text-sm text-muted-foreground hover:bg-secondary/60 transition-colors cursor-pointer"
           >
             <span><span className="text-foreground/40 select-none">$</span> npx @aniui/cli init</span>
             <span className="text-muted-foreground/60">
-              {copiedInstall ? <CheckIcon /> : <CopyIcon />}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={copiedInstall ? "check" : "copy"}
+                  initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  exit={{ opacity: 0, scale: 0.6, rotate: 20 }}
+                  transition={{ duration: 0.18 }}
+                  className="inline-flex"
+                >
+                  {copiedInstall ? <CheckIcon /> : <CopyIcon />}
+                </motion.span>
+              </AnimatePresence>
             </span>
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </div>
 
     <div className="mx-auto max-w-[1400px] px-6">
       {/* ── How it works ─── */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-16">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-16"
+        variants={cardContainer}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
         {[
           { step: "1", title: "Initialize", desc: "Run npx @aniui/cli init to set up theming, Tailwind config, and utilities in your Expo or bare RN project." },
           { step: "2", title: "Add components", desc: "Pick what you need with npx @aniui/cli add button card dialog — source files are copied directly into your project." },
           { step: "3", title: "Make it yours", desc: "Every component is a single file you own. Customize variants, tweak styles, or extend freely — no lock-in." },
         ].map((item) => (
-          <div key={item.step} className="rounded-xl border border-border bg-card p-6">
+          <motion.div
+            key={item.step}
+            variants={cardItem}
+            whileHover={prefersReducedMotion ? undefined : { y: -4, transition: { type: "spring", stiffness: 300, damping: 22 } }}
+            className="rounded-xl border border-border bg-card p-6"
+          >
             <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold mb-3">
               {item.step}
             </div>
             <h3 className="text-base font-semibold text-foreground mb-1">{item.title}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* ── Preview on device ─── */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 rounded-xl border border-border bg-card/50 px-8 py-6 mb-16">
-        <img
+      <motion.div
+        className="flex flex-col sm:flex-row items-center justify-center gap-6 rounded-xl border border-border bg-card/50 px-8 py-6 mb-16"
+        variants={sectionFade}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
+        <motion.img
           src="https://qr.expo.dev/eas-update?slug=exp&projectId=cf032338-2612-4ba6-9212-f2ec55f6a254&groupId=6d14508c-5b49-4f06-80d4-73aaa334481f&host=u.expo.dev"
           alt="Scan with Expo Go"
           className="w-28 h-28 rounded-xl"
+          whileHover={prefersReducedMotion ? undefined : { scale: 1.05, rotate: -1 }}
+          transition={{ type: "spring", stiffness: 280, damping: 18 }}
         />
         <div className="text-center sm:text-left">
           <p className="text-base font-semibold text-foreground">Preview on your device</p>
@@ -221,10 +340,16 @@ export default function HomePage() {
             Scan with Expo Go to try all 89 components live on a real device.
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Live Theme Preview ─── */}
-      <div className="pb-20">
+      <motion.div
+        className="pb-20"
+        variants={sectionFade}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">Make it yours</h2>
@@ -274,43 +399,98 @@ export default function HomePage() {
           </div>
 
           {/* Shuffle */}
-          <button
+          <motion.button
             onClick={handleShuffle}
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
+            whileTap={{ scale: 0.94, rotate: -8 }}
+            transition={{ type: "spring", stiffness: 320, damping: 16 }}
             className="h-8 px-3 rounded-md border border-border bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer inline-flex items-center gap-1.5"
           >
             <ShuffleIcon /> Random
-          </button>
+          </motion.button>
 
           {/* Random color indicator */}
-          {customColor && (
-            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: hsl(customColor.light["--primary"]) }} />
-              {customColor.label}
-            </span>
-          )}
+          <AnimatePresence>
+            {customColor && (
+              <motion.span
+                key={customColor.name}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"
+              >
+                <motion.span
+                  layout
+                  className="h-3 w-3 rounded-full"
+                  style={{ backgroundColor: hsl(customColor.light["--primary"]) }}
+                />
+                {customColor.label}
+              </motion.span>
+            )}
+          </AnimatePresence>
 
           <div className="sm:ml-auto">
-            <button
+            <motion.button
               onClick={handleCopyCSS}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 320, damping: 18 }}
               className="h-8 px-4 rounded-md bg-primary text-primary-foreground text-xs font-medium inline-flex items-center gap-1.5 hover:opacity-90 transition-opacity cursor-pointer"
             >
-              {copiedCSS ? <><CheckIcon /> Copied!</> : <><CopyIcon /> Copy CSS</>}
-            </button>
+              <AnimatePresence mode="wait" initial={false}>
+                {copiedCSS ? (
+                  <motion.span
+                    key="copied"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18 }}
+                    className="inline-flex items-center gap-1.5"
+                  >
+                    <CheckIcon /> Copied!
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="copy"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18 }}
+                    className="inline-flex items-center gap-1.5"
+                  >
+                    <CopyIcon /> Copy CSS
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
 
         {/* Preview */}
-        <div
+        <motion.div
+          layout
           className="rounded-xl border border-border p-4 sm:p-6"
           style={{
             ...Object.fromEntries(Object.entries(vars).map(([k, v]) => [k, v])),
             "--radius": selectedRadius,
             backgroundColor: hsl(vars["--background"]),
+            transition: "background-color 280ms ease",
           } as React.CSSProperties}
         >
-          <ThemePreview vars={vars} radius={selectedRadius} />
-        </div>
-      </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={previewKey}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+            >
+              <ThemePreview vars={vars} radius={selectedRadius} />
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      </motion.div>
 
     </div>
     </>
