@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useId } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 const GLOBAL_QR_URL = "https://qr.expo.dev/eas-update?slug=exp&projectId=cf032338-2612-4ba6-9212-f2ec55f6a254&groupId=6d14508c-5b49-4f06-80d4-73aaa334481f&host=u.expo.dev";
 
@@ -13,71 +14,89 @@ interface PreviewToggleProps {
 
 export function PreviewToggle({ children, qrCodeUrl }: PreviewToggleProps) {
   const [mode, setMode] = useState<"web" | "native">("web");
+  const prefersReducedMotion = useReducedMotion();
+  const layoutId = useId();
+
+  const transition = prefersReducedMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 380, damping: 30 };
 
   return (
     <div className="w-full">
       {/* Toggle bar */}
       <div className="flex items-center gap-1 mb-3 p-1 rounded-lg bg-secondary/40 w-fit">
-        <button
-          onClick={() => setMode("web")}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
-            mode === "web"
-              ? "bg-background text-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Web
-        </button>
-        <button
-          onClick={() => setMode("native")}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
-            mode === "native"
-              ? "bg-background text-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Native
-        </button>
+        {(["web", "native"] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMode(m)}
+            className={`relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+              mode === m
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {mode === m && (
+              <motion.span
+                layoutId={`preview-toggle-${layoutId}`}
+                className="absolute inset-0 rounded-md bg-background shadow-sm"
+                transition={transition}
+              />
+            )}
+            <span className="relative capitalize">{m}</span>
+          </button>
+        ))}
       </div>
 
       {/* Content */}
-      {mode === "web" ? (
-        children
-      ) : (
-        <div className="w-full rounded-lg border border-border overflow-hidden">
-          <div className="flex flex-col items-center gap-4 p-8 bg-card/50">
-            <img
-              src={qrCodeUrl || GLOBAL_QR_URL}
-              alt="Scan with Expo Go"
-              className="w-36 h-36 sm:w-48 sm:h-48 rounded-xl"
-            />
-            <div className="text-center max-w-sm">
-              <p className="text-base font-semibold text-foreground">Preview on your device</p>
-              <p className="text-sm text-muted-foreground mt-1.5">
-                Scan this QR code with <strong>Expo Go</strong> to try all 89 AniUI components on a real iOS or Android device.
-              </p>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={mode}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+        >
+          {mode === "web" ? (
+            children
+          ) : (
+            <div className="w-full rounded-lg border border-border overflow-hidden">
+              <div className="flex flex-col items-center gap-4 p-8 bg-card/50">
+                <motion.img
+                  src={qrCodeUrl || GLOBAL_QR_URL}
+                  alt="Scan with Expo Go"
+                  className="w-36 h-36 sm:w-48 sm:h-48 rounded-xl"
+                  whileHover={prefersReducedMotion ? undefined : { scale: 1.04, rotate: -1 }}
+                  transition={{ type: "spring", stiffness: 280, damping: 18 }}
+                />
+                <div className="text-center max-w-sm">
+                  <p className="text-base font-semibold text-foreground">Preview on your device</p>
+                  <p className="text-sm text-muted-foreground mt-1.5">
+                    Scan this QR code with <strong>Expo Go</strong> to try all 89 AniUI components on a real iOS or Android device.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3 mt-1">
+                  <a
+                    href="https://apps.apple.com/app/expo-go/id982107779"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
+                  >
+                    iOS App Store
+                  </a>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=host.exp.exponent"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
+                  >
+                    Google Play
+                  </a>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-3 mt-1">
-              <a
-                href="https://apps.apple.com/app/expo-go/id982107779"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
-              >
-                iOS App Store
-              </a>
-              <a
-                href="https://play.google.com/store/apps/details?id=host.exp.exponent"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
-              >
-                Google Play
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
