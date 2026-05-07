@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback } from "react";
-import { View } from "react-native";
+import { View, useColorScheme } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
@@ -15,6 +15,7 @@ export interface BottomSheetProps {
 
 export const BottomSheet = forwardRef<BottomSheetModal, BottomSheetProps>(
   ({ className, children, snapPoints = ["25%", "50%"], ...props }, ref) => {
+    const dark = useColorScheme() === "dark";
     const renderBackdrop = useCallback(
       (backdropProps: React.ComponentProps<typeof BottomSheetBackdrop>) => (
         <BottomSheetBackdrop {...backdropProps} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.5} />
@@ -28,8 +29,8 @@ export const BottomSheet = forwardRef<BottomSheetModal, BottomSheetProps>(
         snapPoints={snapPoints}
         enablePanDownToClose
         backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: "#ffffff" }}
-        handleIndicatorStyle={{ backgroundColor: "#71717a" }}
+        backgroundStyle={{ backgroundColor: dark ? "#0a0a0a" : "#ffffff" }}
+        handleIndicatorStyle={{ backgroundColor: dark ? "#52525b" : "#a1a1aa" }}
         {...props}
       >
         <BottomSheetView>
