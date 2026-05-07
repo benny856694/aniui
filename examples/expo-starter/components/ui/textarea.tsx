@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput } from "react-native";
+import { TextInput, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -25,10 +25,15 @@ export interface TextareaProps
 }
 
 export function Textarea({ variant, className, ...props }: TextareaProps) {
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
   return (
     <TextInput
       className={cn(textareaVariants({ variant }), "min-h-24 px-4 py-3 text-base", className)}
       placeholderTextColor="#71717a"
+      keyboardAppearance={dark ? "dark" : "light"}
+      selectionColor={caret}
+      cursorColor={caret}
       multiline
       textAlignVertical="top"
       {...props}
