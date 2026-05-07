@@ -60,6 +60,9 @@ export function InputOTP({ length = 6, value = "", onValueChange, className, ...
           onFocus={() => setFocused(i)}
           onBlur={() => setFocused(-1)}
           keyboardType="number-pad"
+          keyboardAppearance={dark ? "dark" : "light"}
+          selectionColor={borderFocused}
+          cursorColor={borderFocused}
           maxLength={1}
           selectTextOnFocus
           accessible={true}
