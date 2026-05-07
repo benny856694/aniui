@@ -26,15 +26,19 @@ export const springs: Record<string, WithSpringConfig> = {
 };
 
 // ── Layout Animation Presets (entering) ───────────────────────
+// Note: springify() makes content overshoot the target. Use it only for
+// transient surfaces like toasts/banners where bounce reads as "attention".
+// For dialogs and expand-in-place content (accordion/collapsible) we prefer
+// a clean ease-out so the layout doesn't visibly settle.
 export const entering = {
   fadeIn:       FadeIn.duration(200),
-  fadeInUp:     FadeInUp.duration(250).springify().damping(18),
-  fadeInDown:   FadeInDown.duration(250).springify().damping(18),
+  fadeInUp:     FadeInUp.duration(220).easing(Easing.out(Easing.cubic)),
+  fadeInDown:   FadeInDown.duration(220).easing(Easing.out(Easing.cubic)),
   slideInUp:    SlideInUp.duration(300).springify(),
   slideInDown:  SlideInDown.duration(300).springify(),
   slideInLeft:  SlideInLeft.duration(300).springify(),
   slideInRight: SlideInRight.duration(300).springify(),
-  zoomIn:       ZoomIn.duration(250).springify().damping(15),
+  zoomIn:       ZoomIn.duration(200).easing(Easing.out(Easing.cubic)),
   bounceIn:     BounceIn.duration(400),
   flipInX:      FlipInXUp.duration(400),
 };

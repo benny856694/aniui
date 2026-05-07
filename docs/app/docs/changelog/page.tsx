@@ -40,6 +40,8 @@ const releases: Release[] = [
       { type: "fix", text: "TextInput components (Input, Textarea, PasswordInput, SearchBar, InputOTP, MaskedInput, PhoneInput, NumberInput, Combobox, Select): added keyboardAppearance, selectionColor, and cursorColor so the iOS keyboard matches the theme and the caret stays visible against dark input backgrounds." },
       { type: "feat", text: "SegmentedControl: now generic over T extends string | number — binds cleanly to enums and string unions. options accepts T[] (with optional parallel labels?: string[]) or { value, label?, disabled? }[] for unambiguous i18n pairing.", link: "/docs/segmented-control" },
       { type: "fix", text: "SegmentedControl: long i18n labels are now truncated to one line so layout stays stable across locales. onValueChange no longer fires when re-tapping the already-selected segment. className prop now merges with internal classes via cn() instead of being silently dropped.", link: "/docs/segmented-control" },
+      { type: "fix", text: "NumberInput: works around a NativeWind v5 preview cssInterop bug that crashed with 'path.split is not a function' when text-center was used on a TextInput. Center alignment is now passed via the textAlign prop instead of a className.", link: "/docs/number-input" },
+      { type: "fix", text: "Animation presets: zoomIn (used by AlertDialog) and fadeInDown/fadeInUp (used by Accordion and Collapsible) no longer overshoot. Dropped springify() in favor of a clean ease-out so dialogs and expanding content settle without bounce. Toast and ConnectionBanner keep their springy feel — bounce there reads as attention.", link: "/docs/animate" },
     ],
   },
   {
