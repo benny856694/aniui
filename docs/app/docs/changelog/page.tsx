@@ -26,6 +26,23 @@ const typeBadge: Record<ChangeType, { label: string; className: string }> = {
 
 const releases: Release[] = [
   {
+    version: "0.2.24",
+    date: "2026-05-07",
+    title: "iOS Dark Mode Sweep & Generic SegmentedControl",
+    changes: [
+      { type: "fix", text: "Switch: thumb is no longer invisible on iOS in dark mode. iOS thumbColor was previously gated to Android-only, leaving a white thumb on a near-white ON track. Thumb now derives from value across both platforms.", link: "/docs/switch" },
+      { type: "breaking", text: "Switch: renamed thumbColorAndroid prop to thumbColor (now applies to both platforms).", link: "/docs/switch" },
+      { type: "fix", text: "BottomSheet: sheet body and handle indicator now adapt to dark mode (was hardcoded #ffffff, making content unreadable on iOS dark).", link: "/docs/bottom-sheet" },
+      { type: "fix", text: "ActionSheet: same dark-mode background fix as BottomSheet.", link: "/docs/action-sheet" },
+      { type: "fix", text: "SegmentedControl: active segment background and label colors now adapt to dark mode (active was hardcoded #ffffff and disappeared into bg-muted).", link: "/docs/segmented-control" },
+      { type: "fix", text: "InfiniteList: footer ActivityIndicator color now flips with the color scheme (was hardcoded dark, invisible on dark backgrounds).", link: "/docs/infinite-list" },
+      { type: "fix", text: "Spinner: default color now adapts to dark mode when the color prop is not supplied.", link: "/docs/spinner" },
+      { type: "fix", text: "TextInput components (Input, Textarea, PasswordInput, SearchBar, InputOTP, MaskedInput, PhoneInput, NumberInput, Combobox, Select): added keyboardAppearance, selectionColor, and cursorColor so the iOS keyboard matches the theme and the caret stays visible against dark input backgrounds." },
+      { type: "feat", text: "SegmentedControl: now generic over T extends string | number — binds cleanly to enums and string unions. options accepts T[] (with optional parallel labels?: string[]) or { value, label?, disabled? }[] for unambiguous i18n pairing.", link: "/docs/segmented-control" },
+      { type: "fix", text: "SegmentedControl: long i18n labels are now truncated to one line so layout stays stable across locales. onValueChange no longer fires when re-tapping the already-selected segment. className prop now merges with internal classes via cn() instead of being silently dropped.", link: "/docs/segmented-control" },
+    ],
+  },
+  {
     version: "0.2.22",
     date: "2026-04-20",
     title: "CLI Docs Sync, A11y Fixes & ESLint",
