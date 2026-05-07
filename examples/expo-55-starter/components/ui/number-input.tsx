@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, TextInput, Pressable, Text } from "react-native";
+import { View, TextInput, Pressable, Text, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +42,8 @@ export function NumberInput({
 }: NumberInputProps) {
   const [internal, setInternal] = useState(controlledValue ?? min);
   const value = controlledValue ?? internal;
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   const update = useCallback(
     (next: number) => {
@@ -67,6 +69,9 @@ export function NumberInput({
       <TextInput
         className="flex-1 text-center text-foreground text-base p-0"
         keyboardType="number-pad"
+        keyboardAppearance={dark ? "dark" : "light"}
+        selectionColor={caret}
+        cursorColor={caret}
         value={String(value)}
         onChangeText={(t) => update(Number(t) || min)}
         accessibilityLabel="Number value"
