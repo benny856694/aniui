@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { TextInput } from "react-native";
+import { TextInput, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -81,10 +81,16 @@ export function MaskedInput({
     [maskPattern, onChangeText]
   );
 
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
+
   return (
     <TextInput
       className={cn(maskedVariants({ variant, size }), className)}
       placeholderTextColor="#71717a"
+      keyboardAppearance={dark ? "dark" : "light"}
+      selectionColor={caret}
+      cursorColor={caret}
       keyboardType="number-pad"
       value={displayValue}
       onChangeText={handleChange}

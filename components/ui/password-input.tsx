@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Pressable, Text } from "react-native";
+import { View, TextInput, Pressable, Text, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import Svg, { Circle, Line, Path } from "react-native-svg";
@@ -58,6 +58,8 @@ export function PasswordInput({
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState("");
   const strength = getStrength(value);
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   return (
     <View className="gap-2">
@@ -65,6 +67,9 @@ export function PasswordInput({
         <TextInput
           className="flex-1 text-foreground p-0 text-base"
           placeholderTextColor="#71717a"
+          keyboardAppearance={dark ? "dark" : "light"}
+          selectionColor={caret}
+          cursorColor={caret}
           secureTextEntry={!visible}
           onChangeText={(text) => {
             setValue(text);

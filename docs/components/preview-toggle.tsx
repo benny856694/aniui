@@ -3,7 +3,7 @@
 import React, { useState, useId } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-const GLOBAL_QR_URL = "https://qr.expo.dev/eas-update?slug=exp&projectId=cf032338-2612-4ba6-9212-f2ec55f6a254&groupId=6d14508c-5b49-4f06-80d4-73aaa334481f&host=u.expo.dev";
+const GLOBAL_QR_URL = "https://qr.expo.dev/eas-update?slug=exp&projectId=cf032338-2612-4ba6-9212-f2ec55f6a254&groupId=9cc28f20-d357-4453-8741-3dac759cc985&host=u.expo.dev";
 
 interface PreviewToggleProps {
   /** Web preview content (component playground) */

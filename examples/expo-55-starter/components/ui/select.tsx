@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Text, Pressable, TextInput, Modal, ScrollView, Dimensions, LayoutChangeEvent } from "react-native";
+import { View, Text, Pressable, TextInput, Modal, ScrollView, Dimensions, LayoutChangeEvent, useColorScheme } from "react-native";
 import { cn } from "@/lib/utils";
 import Svg, { Path } from "react-native-svg";
 
@@ -23,6 +23,8 @@ export function Select({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const triggerRef = useRef<View>(null);
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
   const [pos, setPos] = useState({ x: 0, y: 0, w: 0, h: 0 });
   const selected = options.find((o) => o.value === value);
   const filtered = searchable && search
@@ -83,6 +85,9 @@ export function Select({
                 className="h-11 px-4 rounded-lg border border-input bg-background text-foreground text-base"
                 placeholder={searchPlaceholder}
                 placeholderTextColor="#71717a"
+                keyboardAppearance={dark ? "dark" : "light"}
+                selectionColor={caret}
+                cursorColor={caret}
                 value={search}
                 onChangeText={setSearch}
                 autoFocus

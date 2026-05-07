@@ -8,6 +8,7 @@ import {
   SectionList,
   Modal,
   ScrollView,
+  useColorScheme,
 } from "react-native";
 import { cn } from "@/lib/utils";
 import Svg, { Path } from "react-native-svg";
@@ -87,6 +88,8 @@ export function Combobox({
 }: ComboboxProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   const allOptions = useMemo(
     () => (groups ? groups.flatMap((g) => g.options) : options),
@@ -255,6 +258,9 @@ export function Combobox({
                 className="min-h-10 px-3 rounded-md border border-input bg-background text-foreground text-base"
                 placeholder={searchPlaceholder}
                 placeholderTextColor="#71717a"
+                keyboardAppearance={dark ? "dark" : "light"}
+                selectionColor={caret}
+                cursorColor={caret}
                 value={search}
                 onChangeText={setSearch}
                 autoFocus

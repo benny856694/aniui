@@ -17,22 +17,31 @@ export function MyScreen() {
   );
 }`;
 const sourceCode = `import React from "react";
-import { View, Switch as RNSwitch, Platform } from "react-native";
+import { View, Switch as RNSwitch, useColorScheme } from "react-native";
 import { cn } from "@/lib/utils";
 
 export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof RNSwitch> {
   className?: string;
+  trackColorOff?: string;
+  trackColorOn?: string;
+  thumbColor?: string;
 }
-export function Switch({ className, ...props }: SwitchProps) {
+
+export function Switch({ className, trackColorOff, trackColorOn, thumbColor, value, ...props }: SwitchProps) {
+  const dark = useColorScheme() === "dark";
+  const off = trackColorOff ?? (dark ? "#27272a" : "#e4e4e7");
+  const on = trackColorOn ?? (dark ? "#fafafa" : "#18181b");
+  // Thumb must contrast with the track in every state. In dark mode the ON
+  // track is near-white, so a default white thumb would disappear on iOS.
+  const thumb = thumbColor ?? (value ? (dark ? "#18181b" : "#ffffff") : "#ffffff");
+
   return (
     <View className={cn("", className)}>
       <RNSwitch
-        trackColor={{
-          false: "hsl(240, 4.8%, 95.9%)",
-          true: "hsl(240, 5.9%, 10%)",
-        }}
-        thumbColor={Platform.OS === "android" ? "hsl(0, 0%, 98%)" : undefined}
-        ios_backgroundColor="hsl(240, 4.8%, 95.9%)"
+        value={value}
+        trackColor={{ false: off, true: on }}
+        thumbColor={thumb}
+        ios_backgroundColor={off}
         accessibilityRole="switch"
         {...props}
       />
@@ -73,6 +82,9 @@ export default function SwitchPage() {
         <PropsTable props={[
           { name: "value", type: "boolean", default: "false" },
           { name: "onValueChange", type: "(value: boolean) => void" },
+          { name: "trackColorOff", type: "string", description: "Override the off-state track color. Defaults adapt to light/dark mode." },
+          { name: "trackColorOn", type: "string", description: "Override the on-state track color. Defaults adapt to light/dark mode." },
+          { name: "thumbColor", type: "string", description: "Override the thumb color. Defaults to a value that contrasts with the active track on both iOS and Android." },
           { name: "className", type: "string" },
         ]} />
         <p className="text-sm text-muted-foreground">

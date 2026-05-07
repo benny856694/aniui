@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput, Pressable, Text } from "react-native";
+import { View, TextInput, Pressable, Text, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import Svg, { Circle, Path } from "react-native-svg";
@@ -32,11 +32,13 @@ export interface SearchBarProps
 
 export function SearchBar({ size = "md", className, value, icon, onClear, showCancel, onCancel, ...props }: SearchBarProps) {
   const iconSize = iconSizes[size ?? "md"];
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   return (
     <View className="flex-row items-center gap-2">
       <View className={cn(searchBarVariants({ size }), className)}>
-        <View className="mr-2">
+        <View className="me-2">
           {icon ??   <Svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="#71717a" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <Circle cx="11" cy="11" r="8" />
       <Path d="m21 21-4.3-4.3" />
@@ -45,13 +47,16 @@ export function SearchBar({ size = "md", className, value, icon, onClear, showCa
         <TextInput
           className="flex-1 text-base text-foreground p-0"
           placeholderTextColor="#71717a"
+          keyboardAppearance={dark ? "dark" : "light"}
+          selectionColor={caret}
+          cursorColor={caret}
           placeholder="Search..."
           value={value}
           accessibilityRole="search"
           {...props}
         />
         {value ? (
-          <Pressable onPress={() => { onClear?.(); props.onChangeText?.(""); }} className="ml-1 h-6 w-6 items-center justify-center rounded-full bg-muted-foreground/20" accessible={true} accessibilityRole="button" accessibilityLabel="Clear search">
+          <Pressable onPress={() => { onClear?.(); props.onChangeText?.(""); }} className="ms-1 h-6 w-6 items-center justify-center rounded-full bg-muted-foreground/20" accessible={true} accessibilityRole="button" accessibilityLabel="Clear search">
               <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="#71717a" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <Path d="m6 6 12 12" />
               </Svg>

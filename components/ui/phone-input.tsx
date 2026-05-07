@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, TextInput, Pressable, Text, ScrollView, Modal } from "react-native";
+import { View, TextInput, Pressable, Text, ScrollView, Modal, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import Svg, { Path } from "react-native-svg";
@@ -49,6 +49,8 @@ export function PhoneInput({
 }: PhoneInputProps) {
   const [country, setCountry] = useState(countries.find((c) => c.code === defaultCountry) ?? countries[0]);
   const [open, setOpen] = useState(false);
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   // Strip the dial code prefix to get just the number for display
   const rawNumber = value.startsWith(country.dial) ? value.slice(country.dial.length) : value.replace(/^\+\d+/, "");
@@ -78,6 +80,9 @@ export function PhoneInput({
       <TextInput
         className="flex-1 text-foreground p-0 text-base"
         placeholderTextColor="#71717a"
+        keyboardAppearance={dark ? "dark" : "light"}
+        selectionColor={caret}
+        cursorColor={caret}
         keyboardType="phone-pad"
         value={rawNumber}
         onChangeText={handleChange}

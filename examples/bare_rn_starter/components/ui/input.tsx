@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -41,12 +41,17 @@ export function Input({
   ...props
 }: InputProps) {
   const hasIcons = !!(leadingIcon || trailingIcon);
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   if (!hasIcons) {
     return (
       <TextInput
         className={cn(inputVariants({ variant, size }), className)}
         placeholderTextColor="#71717a"
+        keyboardAppearance={dark ? "dark" : "light"}
+        selectionColor={caret}
+        cursorColor={caret}
         {...props}
       />
     );
@@ -60,13 +65,16 @@ export function Input({
         className
       )}
     >
-      {leadingIcon && <View className="mr-2">{leadingIcon}</View>}
+      {leadingIcon && <View className="me-2">{leadingIcon}</View>}
       <TextInput
         className="flex-1 text-foreground p-0 text-base"
         placeholderTextColor="#71717a"
+        keyboardAppearance={dark ? "dark" : "light"}
+        selectionColor={caret}
+        cursorColor={caret}
         {...props}
       />
-      {trailingIcon && <View className="ml-2">{trailingIcon}</View>}
+      {trailingIcon && <View className="ms-2">{trailingIcon}</View>}
     </View>
   );
 }

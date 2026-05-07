@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback } from "react";
-import { View, Pressable, Text } from "react-native";
+import { View, Pressable, Text, useColorScheme } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
@@ -22,6 +22,7 @@ export interface ActionSheetProps {
 
 export const ActionSheet = forwardRef<BottomSheetModal, ActionSheetProps>(
   ({ className, title, actions, onCancel }, ref) => {
+    const dark = useColorScheme() === "dark";
     const renderBackdrop = useCallback(
       (backdropProps: React.ComponentProps<typeof BottomSheetBackdrop>) => (
         <BottomSheetBackdrop {...backdropProps} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.5} />
@@ -35,8 +36,8 @@ export const ActionSheet = forwardRef<BottomSheetModal, ActionSheetProps>(
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: "#ffffff" }}
-        handleIndicatorStyle={{ backgroundColor: "#71717a" }}
+        backgroundStyle={{ backgroundColor: dark ? "#0a0a0a" : "#ffffff" }}
+        handleIndicatorStyle={{ backgroundColor: dark ? "#52525b" : "#a1a1aa" }}
       >
         <BottomSheetView>
           <View className={cn("pb-8 px-4", className)}>
