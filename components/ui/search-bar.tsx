@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput, Pressable, Text } from "react-native";
+import { View, TextInput, Pressable, Text, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import Svg, { Circle, Path } from "react-native-svg";
@@ -32,6 +32,8 @@ export interface SearchBarProps
 
 export function SearchBar({ size = "md", className, value, icon, onClear, showCancel, onCancel, ...props }: SearchBarProps) {
   const iconSize = iconSizes[size ?? "md"];
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
 
   return (
     <View className="flex-row items-center gap-2">
@@ -45,6 +47,9 @@ export function SearchBar({ size = "md", className, value, icon, onClear, showCa
         <TextInput
           className="flex-1 text-base text-foreground p-0"
           placeholderTextColor="#71717a"
+          keyboardAppearance={dark ? "dark" : "light"}
+          selectionColor={caret}
+          cursorColor={caret}
           placeholder="Search..."
           value={value}
           accessibilityRole="search"
