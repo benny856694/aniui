@@ -328,7 +328,7 @@ export default function HomePage() {
         viewport={{ once: true, margin: "-80px" }}
       >
         <motion.img
-          src="https://qr.expo.dev/eas-update?slug=exp&projectId=cf032338-2612-4ba6-9212-f2ec55f6a254&groupId=6d14508c-5b49-4f06-80d4-73aaa334481f&host=u.expo.dev"
+          src="https://qr.expo.dev/eas-update?slug=exp&projectId=cf032338-2612-4ba6-9212-f2ec55f6a254&groupId=d0e31e8d-500f-4fdf-9a7c-b759981576ee&host=u.expo.dev "
           alt="Scan with Expo Go"
           className="w-28 h-28 rounded-xl"
           whileHover={prefersReducedMotion ? undefined : { scale: 1.05, rotate: -1 }}
