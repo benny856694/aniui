@@ -67,7 +67,8 @@ export function NumberInput({
         <Text className={cn("text-lg font-bold", value <= min ? "text-muted" : "text-foreground")}>−</Text>
       </Pressable>
       <TextInput
-        className="flex-1 text-center text-foreground text-base p-0"
+        className="flex-1 text-foreground text-base p-0"
+        textAlign="center"
         keyboardType="number-pad"
         keyboardAppearance={dark ? "dark" : "light"}
         selectionColor={caret}
