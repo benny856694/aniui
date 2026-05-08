@@ -206,7 +206,10 @@ export function transformForUniwind(content: string): string {
 }
 
 function getRelativeImportPath(fromDir: string, toFile: string): string {
-  let rel = path.relative(fromDir, toFile);
+  // path.relative() returns OS-specific separators ("..\..\lib\utils" on
+  // Windows). Module specifiers must use forward slashes — and "\u" in the
+  // string source is parsed as a unicode escape, breaking compilation.
+  let rel = path.relative(fromDir, toFile).split(path.sep).join("/");
   // Remove .ts extension for import
   rel = rel.replace(/\.ts$/, "");
   // Ensure it starts with ./ or ../

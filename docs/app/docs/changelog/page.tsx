@@ -26,6 +26,14 @@ const typeBadge: Record<ChangeType, { label: string; className: string }> = {
 
 const releases: Release[] = [
   {
+    version: "0.2.27",
+    date: "2026-05-08",
+    title: "Windows Path Fix",
+    changes: [
+      { type: "fix", text: "CLI: import paths in installed components were using OS-native separators on Windows (e.g. import { cn } from \"..\\..\\lib\\utils\"), which TypeScript parses as unicode escape sequences and rejects with 'Bad character escape sequence'. Normalized path.relative() output to forward slashes in both add and add-block commands.", link: "/docs/cli" },
+    ],
+  },
+  {
     version: "0.2.26",
     date: "2026-05-08",
     title: "SegmentedControl Dark-Mode Contrast",
