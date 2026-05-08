@@ -35,7 +35,7 @@ export function SegmentedControl<T extends string | number = string>({
   ...rest
 }: SegmentedControlProps<T>) {
   const dark = useColorScheme() === "dark";
-  const activeBg = dark ? "#27272a" : "#ffffff";
+  const activeBg = dark ? "#37373a" : "#ffffff";
   const activeFg = dark ? "#fafafa" : "#09090b";
   const inactiveFg = dark ? "#a1a1aa" : "#71717a";
   const disabledFg = dark ? "#52525b" : "#d4d4d8";

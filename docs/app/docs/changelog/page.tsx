@@ -26,12 +26,21 @@ const typeBadge: Record<ChangeType, { label: string; className: string }> = {
 
 const releases: Release[] = [
   {
+    version: "0.2.26",
+    date: "2026-05-08",
+    title: "SegmentedControl Dark-Mode Contrast",
+    changes: [
+      { type: "fix", text: "SegmentedControl: bumped the dark-mode active segment background from #27272a to #37373a so it visibly elevates above the muted track instead of blending in.", link: "/docs/segmented-control" },
+    ],
+  },
+  {
     version: "0.2.25",
     date: "2026-05-07",
     title: "NativeWind v5 Crash Fix & Calmer Animations",
     changes: [
       { type: "fix", text: "NumberInput: works around a NativeWind v5 preview cssInterop bug that crashed with 'path.split is not a function' when text-center was used on a TextInput. Center alignment is now passed via the textAlign prop instead of a className.", link: "/docs/number-input" },
       { type: "fix", text: "Animation presets: zoomIn (used by AlertDialog) and fadeInDown/fadeInUp (used by Accordion and Collapsible) no longer overshoot. Dropped springify() in favor of a clean ease-out so dialogs and expanding content settle without bounce. Toast and ConnectionBanner keep their springy feel — bounce there reads as attention.", link: "/docs/animate" },
+      { type: "fix", text: "SegmentedControl: bumped the dark-mode active segment background from #27272a to #37373a so it visibly elevates above the muted track instead of blending in.", link: "/docs/segmented-control" },
     ],
   },
   {
