@@ -199,7 +199,10 @@ export async function addBlockCommand(names: string[]): Promise<void> {
 }
 
 function getRelativeImportPath(fromDir: string, toFileOrDir: string): string {
-  let rel = path.relative(fromDir, toFileOrDir);
+  // path.relative() returns OS-specific separators ("..\..\lib\utils" on
+  // Windows). Module specifiers must use forward slashes — and "\u" in the
+  // string source is parsed as a unicode escape, breaking compilation.
+  let rel = path.relative(fromDir, toFileOrDir).split(path.sep).join("/");
   // Remove .ts extension for import
   rel = rel.replace(/\.ts$/, "");
   // Ensure it starts with ./ or ../
