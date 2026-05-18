@@ -257,7 +257,7 @@ export function Combobox({
               <TextInput
                 className="min-h-10 px-3 rounded-md border border-input bg-background text-foreground text-base"
                 placeholder={searchPlaceholder}
-                placeholderTextColor="#71717a"
+                placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
                 keyboardAppearance={dark ? "dark" : "light"}
                 selectionColor={caret}
                 cursorColor={caret}

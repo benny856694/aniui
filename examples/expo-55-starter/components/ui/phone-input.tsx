@@ -79,7 +79,7 @@ export function PhoneInput({
       </Pressable>
       <TextInput
         className="flex-1 text-foreground p-0 text-base"
-        placeholderTextColor="#71717a"
+        placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
         keyboardAppearance={dark ? "dark" : "light"}
         selectionColor={caret}
         cursorColor={caret}

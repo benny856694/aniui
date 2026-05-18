@@ -87,7 +87,7 @@ export function MaskedInput({
   return (
     <TextInput
       className={cn(maskedVariants({ variant, size }), className)}
-      placeholderTextColor="#71717a"
+      placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
       keyboardAppearance={dark ? "dark" : "light"}
       selectionColor={caret}
       cursorColor={caret}

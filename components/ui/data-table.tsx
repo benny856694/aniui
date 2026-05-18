@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { View, Text, TextInput, Pressable, ScrollView, type ViewStyle } from "react-native";
+import { View, Text, TextInput, Pressable, ScrollView, useColorScheme, type ViewStyle } from "react-native";
 import { cn } from "@/lib/utils";
 import Svg, { Path } from "react-native-svg";
 
@@ -114,6 +114,8 @@ export function DataTable<T extends Record<string, unknown>>({
     return { width: defaultColumnWidth, overflow: "hidden" };
   };
 
+  const dark = useColorScheme() === "dark";
+
   return (
     <View className={cn("rounded-md border border-border overflow-hidden", className)} {...props}>
       {searchable && (
@@ -121,7 +123,7 @@ export function DataTable<T extends Record<string, unknown>>({
           <TextInput
             className="min-h-10 px-3 rounded-md border border-input bg-background text-foreground text-sm"
             placeholder={searchPlaceholder}
-            placeholderTextColor="#71717a"
+            placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
             value={search}
             onChangeText={(v) => { setSearch(v); setPage(0); }}
             accessibilityLabel="Search table"

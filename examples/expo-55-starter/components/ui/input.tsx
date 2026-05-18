@@ -48,7 +48,7 @@ export function Input({
     return (
       <TextInput
         className={cn(inputVariants({ variant, size }), className)}
-        placeholderTextColor="#71717a"
+        placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
         keyboardAppearance={dark ? "dark" : "light"}
         selectionColor={caret}
         cursorColor={caret}
@@ -68,7 +68,7 @@ export function Input({
       {leadingIcon && <View className="me-2">{leadingIcon}</View>}
       <TextInput
         className="flex-1 text-foreground p-0 text-base"
-        placeholderTextColor="#71717a"
+        placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
         keyboardAppearance={dark ? "dark" : "light"}
         selectionColor={caret}
         cursorColor={caret}
