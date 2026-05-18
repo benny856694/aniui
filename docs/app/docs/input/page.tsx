@@ -53,13 +53,33 @@ const [visible, setVisible] = useState(false);
   }
   placeholder="Password"
 />`;
-const sourceCode = `import React from "react";
+const refCode = `import { useRef } from "react";
 import { TextInput } from "react-native";
+import { Input } from "@/components/ui/input";
+
+export function MyScreen() {
+  const inputRef = useRef<TextInput>(null);
+
+  return (
+    <Input
+      ref={inputRef}
+      placeholder="Enter your email..."
+      onSubmitEditing={() => inputRef.current?.blur()}
+    />
+  );
+}
+
+// Anywhere — e.g. after a button press:
+//   inputRef.current?.focus();
+//   inputRef.current?.blur();
+//   inputRef.current?.clear();`;
+const sourceCode = `import React from "react";
+import { View, TextInput, useColorScheme } from "react-native";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
-  "rounded-md border text-foreground placeholder:text-muted-foreground",
+  "rounded-md border py-2 text-foreground placeholder:text-muted-foreground",
   {
     variants: {
       variant: {
@@ -72,26 +92,61 @@ const inputVariants = cva(
         lg: "min-h-14 px-5 text-lg",
       },
     },
-    defaultVariants: {
-      variant: "default",
-      size: "md",
-    },
+    defaultVariants: { variant: "default", size: "md" },
   }
 );
+
 export interface InputProps
   extends React.ComponentPropsWithoutRef<typeof TextInput>,
     VariantProps<typeof inputVariants> {
   className?: string;
+  leadingIcon?: React.ReactNode;
+  trailingIcon?: React.ReactNode;
 }
-export function Input({ variant, size, className, ...props }: InputProps) {
+
+export const Input = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  InputProps
+>(function Input(
+  { variant, size, className, leadingIcon, trailingIcon, ...props },
+  ref
+) {
+  const hasIcons = !!(leadingIcon || trailingIcon);
+  const dark = useColorScheme() === "dark";
+  const caret = dark ? "#fafafa" : "#18181b";
+
+  if (!hasIcons) {
+    return (
+      <TextInput
+        ref={ref}
+        className={cn(inputVariants({ variant, size }), className)}
+        placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
+        keyboardAppearance={dark ? "dark" : "light"}
+        selectionColor={caret}
+        cursorColor={caret}
+        {...props}
+      />
+    );
+  }
+
   return (
-    <TextInput
-      className={cn(inputVariants({ variant, size }), className)}
-      placeholderTextColor="hsl(240 3.8% 46.1%)"
-      {...props}
-    />
+    <View
+      className={cn("flex-row items-center", inputVariants({ variant, size }), className)}
+    >
+      {leadingIcon && <View className="me-2">{leadingIcon}</View>}
+      <TextInput
+        ref={ref}
+        className="flex-1 text-foreground p-0 text-base"
+        placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
+        keyboardAppearance={dark ? "dark" : "light"}
+        selectionColor={caret}
+        cursorColor={caret}
+        {...props}
+      />
+      {trailingIcon && <View className="ms-2">{trailingIcon}</View>}
+    </View>
   );
-}`;
+});`;
 export default function InputPage() {
   return (
     <div className="space-y-10">
@@ -171,6 +226,14 @@ export default function InputPage() {
           </div>
         </ComponentPlayground>
       </div>
+      {/* Refs */}
+      <div className="space-y-4">
+        <Heading as="h2" className="text-2xl font-semibold tracking-tight text-foreground">Refs</Heading>
+        <p className="text-sm text-muted-foreground">
+          The ref is forwarded to the underlying React Native <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">TextInput</code>, so you can call <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">focus()</code>, <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">blur()</code>, and <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">clear()</code> imperatively. Same applies to Textarea, PasswordInput, SearchBar, MaskedInput, PhoneInput, and NumberInput.
+        </p>
+        <CodeBlock code={refCode} title="app/index.tsx" />
+      </div>
       {/* Props */}
       <div className="space-y-4">
         <Heading as="h2" className="text-2xl font-semibold tracking-tight text-foreground">Props</Heading>
@@ -182,7 +245,7 @@ export default function InputPage() {
           { name: "className", type: "string" },
         ]} />
         <p className="text-sm text-muted-foreground">
-          Also accepts all <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">TextInput</code> props from React Native.
+          Also accepts all <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">TextInput</code> props from React Native, and forwards <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono">ref</code> to the underlying TextInput.
         </p>
       </div>
       {/* Accessibility */}
