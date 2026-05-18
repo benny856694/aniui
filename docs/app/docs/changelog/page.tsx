@@ -26,6 +26,20 @@ const typeBadge: Record<ChangeType, { label: string; className: string }> = {
 
 const releases: Release[] = [
   {
+    version: "0.2.28",
+    date: "2026-05-08",
+    title: "Toast Positions & Animate Auto-Install",
+    changes: [
+      { type: "feat", text: "Toast: independent position and slide-direction controls. position (\"top\" | \"bottom\") chooses where the toast rests; from (\"top\" | \"bottom\" | \"left\" | \"right\") chooses which edge it slides in from. from defaults to match position so the natural pairing just works. Provider accepts defaultPosition + defaultFrom for app-wide defaults. Top resting position and from-top animation are the defaults — every existing toast() call works unchanged.", link: "/docs/toast" },
+      { type: "fix", text: "Toast: corrected the slide-in direction on top-positioned toasts. The previous mapping used SlideInDown for the top position, but Reanimated's SlideInDown means \"starts below the screen and slides upward\" — so a top toast was visibly rising from the bottom. Top position now uses SlideInUp (starts above, slides down) and bottom uses SlideInDown.", link: "/docs/toast" },
+      { type: "fix", text: "Toast: render through @rn-primitives/portal so toasts always anchor to the screen instead of the nearest positioned ancestor. Previously, placing ToastProvider inside a ScrollView would make toasts appear inside the scroll content (~40% from the top instead of at the top) and scroll with the page. The CLI auto-injects <PortalHost /> into the root layout. Toast is now tier-3 (gains @rn-primitives/portal as a dependency).", link: "/docs/toast" },
+      { type: "fix", text: "TextInput components (Input, Textarea, PasswordInput, SearchBar, Combobox, Select, MaskedInput, PhoneInput, DataTable search, CommandMenu/CommandInput, InputGroup, InputGroupTextarea): placeholderTextColor was hardcoded to #71717a regardless of theme. In dark mode this rendered noticeably darker than the muted-foreground text. Now flips between #71717a (light) and #a1a1aa (dark). placeholderTextColor is a native RN prop — NativeWind doesn't process it, so the previous hsl(var(--muted-foreground)) attempt also did not work.", link: "/docs/input" },
+      { type: "feat", text: "Animate: added exiting.slideOutLeft and exiting.slideOutRight presets to round out the four slide-in/slide-out directions used by the new toast from prop.", link: "/docs/animate" },
+      { type: "fix", text: "CLI: aniui add toast / accordion / alert-dialog / collapsible / connection-banner / context-menu / drawer / dropdown-menu / hover-card / popover / swipeable-list-item / tooltip used to ship a broken install — the component file imported @/components/ui/animate but animate.tsx was never copied alongside, so the user would hit a 'Cannot find module' error on first render. The registry now lists animate as a registryDependency for all 12, so the CLI auto-installs it.", link: "/docs/cli" },
+      { type: "fix", text: "CLI tests: new regression test scans every component file for @/components/ui/* imports and asserts each imported component is in its registryDependencies. Catches the entire class of bug before publish.", link: "/docs/cli" },
+    ],
+  },
+  {
     version: "0.2.27",
     date: "2026-05-08",
     title: "Windows Path Fix",
