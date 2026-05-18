@@ -62,6 +62,27 @@ describe("registry", () => {
       }
     }
   });
+
+  // Catches the class of bug where a component imports another AniUI component
+  // but the registry doesn't list it as a registryDependency — which causes
+  // `aniui add <name>` to ship a broken install (missing module at runtime).
+  it.each(names)("%s registryDependencies cover every @/components/ui/* import", (name) => {
+    const entry = registry[name];
+    const filePath = path.join(repoRoot, entry.file);
+    const content = fs.readFileSync(filePath, "utf-8");
+    const importRegex = /from\s+["']@\/components\/ui\/([a-z0-9-]+)["']/g;
+    const imported = new Set<string>();
+    let match: RegExpExecArray | null;
+    while ((match = importRegex.exec(content)) !== null) {
+      if (match[1] !== name) imported.add(match[1]);
+    }
+    for (const dep of imported) {
+      expect(
+        entry.registryDependencies,
+        `${name}.tsx imports @/components/ui/${dep} but ${dep} is not in its registryDependencies — aniui add ${name} would ship a broken install.`,
+      ).toContain(dep);
+    }
+  });
 });
 
 describe("resolveRegistryDeps", () => {

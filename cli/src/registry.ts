@@ -149,7 +149,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/accordion.tsx",
     description: "Expandable content sections",
     dependencies: ["@rn-primitives/accordion", "react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   tabs: {
@@ -165,16 +165,16 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/collapsible.tsx",
     description: "Animated show/hide content",
     dependencies: ["react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 2,
   },
   toast: {
     name: "Toast",
     file: "components/ui/toast.tsx",
-    description: "Notification toast with auto-dismiss",
-    dependencies: ["react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
-    tier: 2,
+    description: "Notification toast with auto-dismiss, position (top/bottom), and slide-in direction (top/bottom/left/right)",
+    dependencies: ["@rn-primitives/portal", "react-native-reanimated", "clsx", "tailwind-merge"],
+    registryDependencies: ["animate"],
+    tier: 3,
   },
   dialog: {
     name: "Dialog",
@@ -189,7 +189,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/alert-dialog.tsx",
     description: "Confirmation dialog with actions",
     dependencies: ["react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 2,
   },
   tooltip: {
@@ -197,7 +197,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/tooltip.tsx",
     description: "Accessible tooltip with positioning",
     dependencies: ["@rn-primitives/tooltip", "@rn-primitives/portal", "react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   popover: {
@@ -205,7 +205,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/popover.tsx",
     description: "Contextual overlay with trigger positioning",
     dependencies: ["@rn-primitives/popover", "@rn-primitives/portal", "react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   "bottom-sheet": {
@@ -277,7 +277,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/drawer.tsx",
     description: "Slide-in side navigation panel",
     dependencies: ["react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 2,
   },
   "input-otp": {
@@ -333,7 +333,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/dropdown-menu.tsx",
     description: "Dropdown menu with items, separators, and destructive actions",
     dependencies: ["@rn-primitives/dropdown-menu", "@rn-primitives/portal", "react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   "context-menu": {
@@ -341,7 +341,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/context-menu.tsx",
     description: "Long-press context menu with items and separators",
     dependencies: ["@rn-primitives/context-menu", "@rn-primitives/portal", "react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   image: {
@@ -453,7 +453,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/swipeable-list-item.tsx",
     description: "Swipeable list item revealing action buttons on swipe",
     dependencies: ["react-native-reanimated", "react-native-gesture-handler", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   form: {
@@ -637,7 +637,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/connection-banner.tsx",
     description: "Animated banner showing online/offline connection status",
     dependencies: ["react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 2,
   },
   "typing-indicator": {
@@ -685,7 +685,7 @@ export const registry: Record<string, ComponentEntry> = {
     file: "components/ui/hover-card.tsx",
     description: "Preview content card triggered by hover or long-press",
     dependencies: ["@rn-primitives/hover-card", "@rn-primitives/portal", "react-native-reanimated", "clsx", "tailwind-merge"],
-    registryDependencies: [],
+    registryDependencies: ["animate"],
     tier: 3,
   },
   "direction-provider": {
