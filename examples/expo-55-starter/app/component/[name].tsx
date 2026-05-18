@@ -92,7 +92,7 @@ function ToastDemo() {
   const { toast } = useToast();
   return (
     <View className="gap-6">
-      <Text className="text-sm text-muted-foreground">Non-modal notifications that appear briefly at the top of the screen. Supports default, success, and destructive variants.</Text>
+      <Text className="text-sm text-muted-foreground">Non-modal notifications that auto-dismiss after 3 seconds. Defaults to sliding in from the top, but each toast can choose a side via the position prop.</Text>
       <View className="gap-2">
         <Text className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Variants</Text>
         <View className="gap-3">
@@ -104,6 +104,22 @@ function ToastDemo() {
       <View className="gap-2">
         <Text className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Title Only</Text>
         <Button variant="outline" onPress={() => toast({ title: "Quick notification" })}>Title Only Toast</Button>
+      </View>
+      <View className="gap-2">
+        <Text className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Position (where it rests)</Text>
+        <View className="flex-row flex-wrap gap-3">
+          <Button variant="outline" onPress={() => toast({ title: "Sits at the top", position: "top" })}>Top</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Sits at the bottom", position: "bottom" })}>Bottom</Button>
+        </View>
+      </View>
+      <View className="gap-2">
+        <Text className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Slide-in direction (top position)</Text>
+        <View className="flex-row flex-wrap gap-3">
+          <Button variant="outline" onPress={() => toast({ title: "Drops down from above", position: "top", from: "top" })}>From top</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Rises from below", position: "top", from: "bottom" })}>From bottom</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Flies in from left", position: "top", from: "left" })}>From left</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Flies in from right", position: "top", from: "right" })}>From right</Button>
+        </View>
       </View>
     </View>
   );

@@ -105,6 +105,22 @@ function ToastDemo() {
         <Text className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Title Only</Text>
         <Button variant="outline" onPress={() => toast({ title: "Quick notification" })}>Title Only Toast</Button>
       </View>
+      <View className="gap-2">
+        <Text className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Position (where it rests)</Text>
+        <View className="flex-row flex-wrap gap-3">
+          <Button variant="outline" onPress={() => toast({ title: "Sits at the top", position: "top" })}>Top</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Sits at the bottom", position: "bottom" })}>Bottom</Button>
+        </View>
+      </View>
+      <View className="gap-2">
+        <Text className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Slide-in direction (top position)</Text>
+        <View className="flex-row flex-wrap gap-3">
+          <Button variant="outline" onPress={() => toast({ title: "Drops down from above", position: "top", from: "top" })}>From top</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Rises from below", position: "top", from: "bottom" })}>From bottom</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Flies in from left", position: "top", from: "left" })}>From left</Button>
+          <Button variant="outline" onPress={() => toast({ title: "Flies in from right", position: "top", from: "right" })}>From right</Button>
+        </View>
+      </View>
     </View>
   );
 }
