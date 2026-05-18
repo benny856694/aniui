@@ -152,7 +152,7 @@ export default function HomeScreen() {
             <TextInput
               className="flex-1 text-foreground text-sm"
               placeholder="Search components..."
-              placeholderTextColor="hsl(var(--muted-foreground))"
+              placeholderTextColor={isDark ? "#a1a1aa" : "#71717a"}
               value={search}
               onChangeText={setSearch}
             />

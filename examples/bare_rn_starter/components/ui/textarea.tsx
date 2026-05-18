@@ -30,7 +30,7 @@ export function Textarea({ variant, className, ...props }: TextareaProps) {
   return (
     <TextInput
       className={cn(textareaVariants({ variant }), "min-h-24 px-4 py-3 text-base", className)}
-      placeholderTextColor="#71717a"
+      placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
       keyboardAppearance={dark ? "dark" : "light"}
       selectionColor={caret}
       cursorColor={caret}

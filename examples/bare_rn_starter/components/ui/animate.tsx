@@ -4,7 +4,7 @@ import {
   FadeIn, FadeOut,
   FadeInUp, FadeInDown, FadeOutUp, FadeOutDown,
   SlideInUp, SlideInDown, SlideInLeft, SlideInRight,
-  SlideOutUp, SlideOutDown,
+  SlideOutUp, SlideOutDown, SlideOutLeft, SlideOutRight,
   ZoomIn, ZoomOut,
   BounceIn,
   FlipInXUp,
@@ -45,12 +45,14 @@ export const entering = {
 
 // ── Layout Animation Presets (exiting) ────────────────────────
 export const exiting = {
-  fadeOut:      FadeOut.duration(150),
-  fadeOutUp:    FadeOutUp.duration(200),
-  fadeOutDown:  FadeOutDown.duration(200),
-  slideOutUp:   SlideOutUp.duration(200),
-  slideOutDown: SlideOutDown.duration(200),
-  zoomOut:      ZoomOut.duration(200),
+  fadeOut:       FadeOut.duration(150),
+  fadeOutUp:     FadeOutUp.duration(200),
+  fadeOutDown:   FadeOutDown.duration(200),
+  slideOutUp:    SlideOutUp.duration(200),
+  slideOutDown:  SlideOutDown.duration(200),
+  slideOutLeft:  SlideOutLeft.duration(200),
+  slideOutRight: SlideOutRight.duration(200),
+  zoomOut:       ZoomOut.duration(200),
 };
 
 // ── Duration Presets (ms) ─────────────────────────────────────

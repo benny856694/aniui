@@ -46,7 +46,7 @@ export function SearchBar({ size = "md", className, value, icon, onClear, showCa
         </View>
         <TextInput
           className="flex-1 text-base text-foreground p-0"
-          placeholderTextColor="#71717a"
+          placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
           keyboardAppearance={dark ? "dark" : "light"}
           selectionColor={caret}
           cursorColor={caret}

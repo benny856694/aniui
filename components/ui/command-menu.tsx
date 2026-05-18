@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { View, Text, TextInput, Pressable, Modal, SectionList } from "react-native";
+import { View, Text, TextInput, Pressable, Modal, SectionList, useColorScheme } from "react-native";
 import { cn } from "@/lib/utils";
 import Svg, { Path } from "react-native-svg";
 
@@ -34,6 +34,7 @@ export function CommandMenu({
   ...props
 }: CommandMenuProps) {
   const [search, setSearch] = useState("");
+  const dark = useColorScheme() === "dark";
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -84,7 +85,7 @@ export function CommandMenu({
             <TextInput
               className="flex-1 min-h-12 ps-3 text-base text-foreground"
               placeholder={placeholder}
-              placeholderTextColor="#71717a"
+              placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
               value={search}
               onChangeText={setSearch}
               autoFocus
@@ -151,10 +152,11 @@ export interface CommandInputProps extends React.ComponentPropsWithoutRef<typeof
 }
 
 export function CommandInput({ className, ...props }: CommandInputProps) {
+  const dark = useColorScheme() === "dark";
   return (
     <TextInput
       className={cn("min-h-12 px-4 text-base text-foreground border-b border-border", className)}
-      placeholderTextColor="#71717a"
+      placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
       {...props}
     />
   );
