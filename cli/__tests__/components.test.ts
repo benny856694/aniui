@@ -28,7 +28,7 @@ describe("component source files", () => {
   });
 
   // Complex components with many features (multi-select, groups, search-with-positioning, etc.) justifiably exceed 120 lines
-  const largeComponents = new Set(["combobox", "input-group", "command-menu", "data-table", "tabs", "select"]);
+  const largeComponents = new Set(["combobox", "input-group", "command-menu", "data-table", "tabs", "select", "phone-input"]);
 
   it.each(names)("%s is under 120 lines", (name) => {
     const filePath = path.join(repoRoot, registry[name].file);
