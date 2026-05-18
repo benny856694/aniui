@@ -26,6 +26,14 @@ const typeBadge: Record<ChangeType, { label: string; className: string }> = {
 
 const releases: Release[] = [
   {
+    version: "0.2.29",
+    date: "2026-05-08",
+    title: "TextInput Refs",
+    changes: [
+      { type: "feat", text: "Input, Textarea, PasswordInput, SearchBar, MaskedInput, PhoneInput, NumberInput: forward ref to the underlying React Native TextInput. Lets callers do inputRef.current?.focus() / blur() / clear() imperatively — useful for autofocus after a validation error, chaining inputs on submit, or programmatic dismissal.", link: "/docs/input" },
+    ],
+  },
+  {
     version: "0.2.28",
     date: "2026-05-08",
     title: "Toast Positions & Animate Auto-Install",
