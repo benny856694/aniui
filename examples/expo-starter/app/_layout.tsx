@@ -27,7 +27,7 @@ function AppStack() {
         contentStyle: { backgroundColor: bg },
       }}
     >
-      <Stack.Screen name="index" options={{ title: "AniUI" }} />
+      <Stack.Screen name="index" options={{ title: "AniUI", headerShown: false }} />
       <Stack.Screen name="component/[name]" options={{ title: "" }} />
     </Stack>
   );
