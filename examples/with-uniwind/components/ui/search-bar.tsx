@@ -30,7 +30,13 @@ export interface SearchBarProps
   onCancel?: () => void;
 }
 
-export function SearchBar({ size = "md", className, value, icon, onClear, showCancel, onCancel, ...props }: SearchBarProps) {
+export const SearchBar = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  SearchBarProps
+>(function SearchBar(
+  { size = "md", className, value, icon, onClear, showCancel, onCancel, ...props },
+  ref
+) {
   const iconSize = iconSizes[size ?? "md"];
   const dark = useColorScheme() === "dark";
   const caret = dark ? "#fafafa" : "#18181b";
@@ -45,6 +51,7 @@ export function SearchBar({ size = "md", className, value, icon, onClear, showCa
     </Svg>}
         </View>
         <TextInput
+          ref={ref}
           className="flex-1 text-base text-foreground p-0"
           placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
           keyboardAppearance={dark ? "dark" : "light"}
@@ -70,4 +77,4 @@ export function SearchBar({ size = "md", className, value, icon, onClear, showCa
       )}
     </View>
   );
-}
+});

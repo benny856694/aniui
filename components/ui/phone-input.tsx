@@ -43,10 +43,13 @@ export interface PhoneInputProps
   onChangeText?: (fullPhone: string) => void;
 }
 
-export function PhoneInput({
-  variant, size, className, defaultCountry = "US",
-  value = "", onChangeText, ...props
-}: PhoneInputProps) {
+export const PhoneInput = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  PhoneInputProps
+>(function PhoneInput(
+  { variant, size, className, defaultCountry = "US", value = "", onChangeText, ...props },
+  ref
+) {
   const [country, setCountry] = useState(countries.find((c) => c.code === defaultCountry) ?? countries[0]);
   const [open, setOpen] = useState(false);
   const dark = useColorScheme() === "dark";
@@ -78,6 +81,7 @@ export function PhoneInput({
     </Svg>
       </Pressable>
       <TextInput
+        ref={ref}
         className="flex-1 text-foreground p-0 text-base"
         placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
         keyboardAppearance={dark ? "dark" : "light"}
@@ -113,4 +117,4 @@ export function PhoneInput({
       </Modal>
     </View>
   );
-}
+});

@@ -52,16 +52,13 @@ export interface MaskedInputProps
   onChangeText?: (masked: string, raw: string) => void;
 }
 
-export function MaskedInput({
-  variant,
-  size,
-  className,
-  mask: customMask,
-  preset,
-  onChangeText,
-  value: controlledValue,
-  ...props
-}: MaskedInputProps & { value?: string }) {
+export const MaskedInput = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  MaskedInputProps & { value?: string }
+>(function MaskedInput(
+  { variant, size, className, mask: customMask, preset, onChangeText, value: controlledValue, ...props },
+  ref
+) {
   const maskPattern = customMask ?? (preset ? masks[preset] : "");
   const [internal, setInternal] = React.useState("");
   const displayValue = controlledValue ?? internal;
@@ -86,6 +83,7 @@ export function MaskedInput({
 
   return (
     <TextInput
+      ref={ref}
       className={cn(maskedVariants({ variant, size }), className)}
       placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
       keyboardAppearance={dark ? "dark" : "light"}
@@ -98,4 +96,4 @@ export function MaskedInput({
       {...props}
     />
   );
-}
+});

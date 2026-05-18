@@ -24,11 +24,15 @@ export interface TextareaProps
   className?: string;
 }
 
-export function Textarea({ variant, className, ...props }: TextareaProps) {
+export const Textarea = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  TextareaProps
+>(function Textarea({ variant, className, ...props }, ref) {
   const dark = useColorScheme() === "dark";
   const caret = dark ? "#fafafa" : "#18181b";
   return (
     <TextInput
+      ref={ref}
       className={cn(textareaVariants({ variant }), "min-h-24 px-4 py-3 text-base", className)}
       placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
       keyboardAppearance={dark ? "dark" : "light"}
@@ -39,4 +43,4 @@ export function Textarea({ variant, className, ...props }: TextareaProps) {
       {...props}
     />
   );
-}
+});
