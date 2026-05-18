@@ -47,14 +47,13 @@ const strengthColors = [
 ];
 const strengthLabels = ["Weak", "Fair", "Good", "Strong"];
 
-export function PasswordInput({
-  variant,
-  size,
-  className,
-  showStrength,
-  onChangeText,
-  ...props
-}: PasswordInputProps) {
+export const PasswordInput = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  PasswordInputProps
+>(function PasswordInput(
+  { variant, size, className, showStrength, onChangeText, ...props },
+  ref
+) {
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState("");
   const strength = getStrength(value);
@@ -65,6 +64,7 @@ export function PasswordInput({
     <View className="gap-2">
       <View className={cn(passwordVariants({ variant, size }), className)}>
         <TextInput
+          ref={ref}
           className="flex-1 text-foreground p-0 text-base"
           placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
           keyboardAppearance={dark ? "dark" : "light"}
@@ -105,4 +105,4 @@ export function PasswordInput({
       )}
     </View>
   );
-}
+});

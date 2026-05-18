@@ -32,14 +32,13 @@ export interface InputProps
   trailingIcon?: React.ReactNode;
 }
 
-export function Input({
-  variant,
-  size,
-  className,
-  leadingIcon,
-  trailingIcon,
-  ...props
-}: InputProps) {
+export const Input = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  InputProps
+>(function Input(
+  { variant, size, className, leadingIcon, trailingIcon, ...props },
+  ref
+) {
   const hasIcons = !!(leadingIcon || trailingIcon);
   const dark = useColorScheme() === "dark";
   const caret = dark ? "#fafafa" : "#18181b";
@@ -47,6 +46,7 @@ export function Input({
   if (!hasIcons) {
     return (
       <TextInput
+        ref={ref}
         className={cn(inputVariants({ variant, size }), className)}
         placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
         keyboardAppearance={dark ? "dark" : "light"}
@@ -67,6 +67,7 @@ export function Input({
     >
       {leadingIcon && <View className="me-2">{leadingIcon}</View>}
       <TextInput
+        ref={ref}
         className="flex-1 text-foreground p-0 text-base"
         placeholderTextColor={dark ? "#a1a1aa" : "#71717a"}
         keyboardAppearance={dark ? "dark" : "light"}
@@ -77,4 +78,4 @@ export function Input({
       {trailingIcon && <View className="ms-2">{trailingIcon}</View>}
     </View>
   );
-}
+});

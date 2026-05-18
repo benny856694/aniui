@@ -29,17 +29,13 @@ export interface NumberInputProps
   step?: number;
 }
 
-export function NumberInput({
-  variant,
-  size,
-  className,
-  value: controlledValue,
-  onValueChange,
-  min = 0,
-  max = 999999,
-  step = 1,
-  ...props
-}: NumberInputProps) {
+export const NumberInput = React.forwardRef<
+  React.ElementRef<typeof TextInput>,
+  NumberInputProps
+>(function NumberInput(
+  { variant, size, className, value: controlledValue, onValueChange, min = 0, max = 999999, step = 1, ...props },
+  ref
+) {
   const [internal, setInternal] = useState(controlledValue ?? min);
   const value = controlledValue ?? internal;
   const dark = useColorScheme() === "dark";
@@ -67,6 +63,7 @@ export function NumberInput({
         <Text className={cn("text-lg font-bold", value <= min ? "text-muted" : "text-foreground")}>−</Text>
       </Pressable>
       <TextInput
+        ref={ref}
         className="flex-1 text-foreground text-base p-0"
         textAlign="center"
         keyboardType="number-pad"
@@ -90,4 +87,4 @@ export function NumberInput({
       </Pressable>
     </View>
   );
-}
+});
